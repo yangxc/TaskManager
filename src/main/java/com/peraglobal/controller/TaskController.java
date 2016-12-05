@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *  <code>TaskController.java</code>
- *  <p>功能:任务调度器Controller
+ *  <p>功能:任务调度器 Controller
  *  
  *  <p>Copyright 安世亚太 2016 All right reserved.
  *  @author yongqian.liu	
