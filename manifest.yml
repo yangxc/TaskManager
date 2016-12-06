@@ -1,0 +1,7 @@
+---
+applications:
+  - name: taskmanager-yangxc
+    buildpack: java_buildpack
+    path: target/com.peraglobal.taskmanager-0.0.1-SNAPSHOT.jar
+    services:
+      - yangxc-mysql
