@@ -1,6 +1,15 @@
 package com.peraglobal.service;
 
+import java.util.List;
+
+import org.quartz.Scheduler;
+import org.quartz.SchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean;
+
+import com.peraglobal.mapper.TaskMapper;
+import com.peraglobal.model.Task;
 
 /**
  *  <code>TaskSchedulerService.java</code>
@@ -14,8 +23,12 @@ import org.springframework.stereotype.Service;
 @Service("taskSchedulerService")
 public class TaskSchedulerService {
 
+	
+	@Autowired
+    private TaskMapper taskMapper;
+	
 	public void initTask() {
-		// TODO Auto-generated method stub
+		List<Task> tasks = taskMapper.getTaskAll();
 		
 	}
 
@@ -23,6 +36,8 @@ public class TaskSchedulerService {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 	
 	

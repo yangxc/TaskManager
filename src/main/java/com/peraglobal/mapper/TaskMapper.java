@@ -38,5 +38,8 @@ public interface TaskMapper {
     @Update("update Task taskState = '2' where taskId = #{taskId}")
 	public int stop(String taskId);
     
+    @Select("select * from Task")
+    public List<Task> getTaskAll();
+    
 
 }
