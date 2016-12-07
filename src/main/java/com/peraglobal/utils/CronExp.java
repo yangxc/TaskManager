@@ -42,16 +42,12 @@ public class CronExp {
 	 * @param flgId 组合ID值
 	 * @return 实现每天触发的
 	 */
-	public static Trigger triggerToOne(String taskId, String dateTime, String operation, JobDetail jobDetail) {
+	public static Trigger triggerToOne(String taskId, String cron, String operation, JobDetail jobDetail) {
 		/***************************
     	 * 功能：触发一次
     	 * 参数：秒 分 时 日 月 年
     	 * 示例：00 00 08 01 07 2015 触发时间在 2015-7-1 8:00:00
     	 ***************************/
-		
-		String time = dateTime.replaceAll("-", ":").replaceAll(" ", ":");
-		String[] hms = time.split(":"); // 时 分 秒 转换字符串数组
-		String cron = hms[5] + " " + hms[4] + " " + hms[3] + " " + hms[2] + " " + hms[1] + " ? " + hms[0];
 		Trigger trigger = TriggerBuilder
 				.newTrigger()
 				.withIdentity(operation, taskId)
@@ -69,7 +65,7 @@ public class CronExp {
 	 * @param flgId 组合 ID：为实现开始和结束触发器生成使用
 	 * @return 天规则的触发器对象
 	 */
-	public static Trigger triggerToDay(String taskId, String dateTime, String operation, JobDetail jobDetail) {
+	public static Trigger triggerToDay(String taskId, int[] cron, String operation, JobDetail jobDetail) {
     	/***************************
     	 * 功能：按照天触发任务
     	 * 参数：秒 分 时
@@ -77,8 +73,7 @@ public class CronExp {
     	 ***************************/
 		
 		// 格式化时间字符串		
-		int[] hms = formatHms(dateTime);
-		TimeOfDay timeOfDay = new TimeOfDay(hms[0], hms[1], hms[2]);
+		TimeOfDay timeOfDay = new TimeOfDay(cron[0], cron[1], cron[2]);
 		Trigger trigger = TriggerBuilder
 				.newTrigger()
 				.withIdentity(operation, taskId)
@@ -108,25 +103,4 @@ public class CronExp {
 		return trigger;
 	}
 	
-	/**
-	 * 时分秒格式的字符串格式为 时分秒的数组
-	 * @param time 当前时间
-	 * @return {hh,mm,ss} 时间格式的数组
-	 */
-	private static int[] formatHms(String time){
-		try {
-			if(null == time)
-				return null;
-			String times[] = time.split(":");
-			int hms[] = new int[times.length];
-			for (int i = 0; i < times.length; i++) {
-				hms[i] = Integer.parseInt(times[i]);
-			}
-			return hms;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
 }

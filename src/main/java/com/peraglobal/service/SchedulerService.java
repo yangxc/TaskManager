@@ -138,7 +138,7 @@ public class SchedulerService {
 	}
 	
 	/**
-     * 删除触发器
+     * 从调度器中删除触发器
      * @param task 当前任务
      */
     public void delTrigger(Task task){

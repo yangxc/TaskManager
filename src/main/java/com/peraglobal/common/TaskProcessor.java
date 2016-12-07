@@ -9,7 +9,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import com.peraglobal.service.SchedulerService;
 
 /**
- *  <code>QuartzTaskJobProcessor.java</code>
+ *  <code>TaskProcessor.java</code>
  *  <p>功能:重写 spring 监听器在服务启动或者新增加一个线程时会触发
  *  <p>此类主要用于容器启动注入所有bean后初始化任务调度器并加载所有任务
  *  
@@ -20,7 +20,7 @@ import com.peraglobal.service.SchedulerService;
  *  </br>最后修改人 无
  */
 @Configuration
-public class QuartzTaskJobProcessor implements ApplicationListener<ContextRefreshedEvent> {
+public class TaskProcessor implements ApplicationListener<ContextRefreshedEvent> {
 
 	@Resource
     private SchedulerService taskSchedulerService;

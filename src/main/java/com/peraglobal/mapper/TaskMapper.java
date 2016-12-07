@@ -30,8 +30,8 @@ public interface TaskMapper {
     @Select("select taskId, taskName, groupId from Task where taskId = #{taskId}")
     public Task getTask(String taskId);
    
-    @Select("select taskId, taskName, groupId from Task where taskId = #{taskName} and groupId = #{groupId}")
-    public Task getTaskByTaskName(String taskName, String groupId);
+    @Select("select taskId from Task where taskName = #{taskName} and groupId = #{groupId}")
+    public String getTaskByTaskName(String taskName, String groupId);
     
     @Insert("insert into Task (taskId, taskName, groupId, startExpress, stopExpress, startCommand, stopCommand) values(#{taskId}, #{taskName}, #{groupId}, #{startExpress}, #{stopExpress}, #{startCommand}, #{stopCommand})")  
     public int createTask(Task task);

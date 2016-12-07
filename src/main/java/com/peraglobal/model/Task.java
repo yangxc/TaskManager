@@ -47,6 +47,11 @@ public class Task {
 	 */
 	private String stopCommand;
 	
+	/**
+	 * @category 状态
+	 */
+	private String taskState;
+	
 
 	public String getTaskId() {
 		return taskId;
@@ -104,4 +109,11 @@ public class Task {
 		this.stopCommand = stopCommand;
 	}
 	
+	public String getTaskState() {
+		return taskState;
+	}
+
+	public void setTaskState(String taskState) {
+		this.taskState = taskState;
+	}
 }

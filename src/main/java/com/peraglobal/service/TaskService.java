@@ -38,17 +38,17 @@ public class TaskService {
 		return taskMapper.getTask(taskId);
 	}
 
-	public int createTask(Task task) {
-		Task t = taskMapper.getTaskByTaskName(task.getTaskName(), task.getGroupId());
-		if(t != null) {
-			return Result.EXISTS;
-		}
+	public String createTask(Task task) {
 		try {
-			taskMapper.createTask(task);
+			String taskId = taskMapper.getTaskByTaskName(task.getTaskName(), task.getGroupId());
+			if(taskId == null) {
+				task.setTaskId(java.util.UUID.randomUUID().toString());
+				taskMapper.createTask(task);
+				return task.getTaskId();
+			}
 		} catch (Exception e) {
-			return Result.ERROR;
 		}
-		return Result.SUCCESS;
+		return null;
 	}
 
 	public int removeTask(String taskId) {
@@ -74,9 +74,9 @@ public class TaskService {
 		return Result.SUCCESS;
 	}
 
-	public int renameTask(String taskId, String taskName) {
+	public int renameTask(Task task) {
 		try {
-			taskMapper.renameTask(taskId, taskName);
+			taskMapper.renameTask(task.getTaskId(), task.getTaskName());
 		} catch (Exception e) {
 			return Result.ERROR;
 		}
