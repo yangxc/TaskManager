@@ -18,7 +18,8 @@ import com.peraglobal.utils.ResultCode;
  *  
  *  <p>Copyright 安世亚太 2016 All right reserved.
  *  @author yongqian.liu	
- *  @version 1.0 
+ *  @version 1.0
+ *  @see 2016-12-5
  *  </br>最后修改人 无
  */
 @RestController
@@ -126,7 +127,14 @@ public class TaskController {
 	public JsonResult editTask(String taskId, String taskName, String startExpress, String stopExpress, String startCommand, String stopCommand) {
 		JsonResult result = new JsonResult();
 		
-		taskService.editTask(taskId);
+		Task task = new Task();
+		task.setTaskId(taskId);
+		task.setTaskName(taskName);
+		task.setStartExpress(startExpress);
+		task.setStopExpress(stopExpress);
+		task.setStartCommand(startCommand);
+		task.setStopCommand(stopCommand);
+		taskService.editTask(task);
 		
 		result.setMessage("编辑任务成功！");
 		result.setCode(ResultCode.SUCCESS);
@@ -177,7 +185,7 @@ public class TaskController {
 	public JsonResult reset(String taskId) {
 		JsonResult result = new JsonResult();
 		
-		taskService.reset(taskId);
+		// taskService.reset(taskId);
 		
 		result.setMessage("重启成功！");
 		result.setCode(ResultCode.SUCCESS);

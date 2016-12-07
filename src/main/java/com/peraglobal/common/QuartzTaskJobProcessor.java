@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import com.peraglobal.service.TaskSchedulerService;
+import com.peraglobal.service.SchedulerService;
 
 /**
  *  <code>QuartzTaskJobProcessor.java</code>
@@ -15,17 +15,18 @@ import com.peraglobal.service.TaskSchedulerService;
  *  
  *  <p>Copyright 安世亚太 2016 All right reserved.
  *  @author yongqian.liu	
- *  @version 1.0 
+ *  @version 1.0
+ *  @see 2016-12-6
  *  </br>最后修改人 无
  */
 @Configuration
 public class QuartzTaskJobProcessor implements ApplicationListener<ContextRefreshedEvent> {
 
 	@Resource
-    private TaskSchedulerService taskSchedulerService;
+    private SchedulerService taskSchedulerService;
 	
 	// 是否初始化
-	private static boolean isStart = false;
+	private static boolean isStart = true;
 	 
 	/**
 	 * 工程启动时注入所有任务，此方法会重复调用多次，
@@ -34,13 +35,11 @@ public class QuartzTaskJobProcessor implements ApplicationListener<ContextRefres
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
 		// 系统启动时执行
-		if (!isStart) { 
-			isStart= true;
-			// 初始化任务
-			taskSchedulerService.initTask();
-			
-			// 启动调度器
-			taskSchedulerService.start();
+		if (isStart) { 
+			isStart = false;
+			taskSchedulerService.initScheduler();
+			taskSchedulerService.start(); // 启动调度器
+			taskSchedulerService.initJob(); // 初始化任务
 		}
 	}
 }

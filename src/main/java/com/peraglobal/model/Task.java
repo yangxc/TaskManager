@@ -1,5 +1,15 @@
 package com.peraglobal.model;
 
+/**
+ *  <code>Task.java</code>
+ *  <p>功能:任务对象
+ *  
+ *  <p>Copyright 安世亚太 2016 All right reserved.
+ *  @author yongqian.liu	
+ *  @version 1.0
+ *  @see 2016-12-2
+ *  </br>最后修改人 无
+ */
 public class Task {
 
 	/**
@@ -93,8 +103,5 @@ public class Task {
 	public void setStopCommand(String stopCommand) {
 		this.stopCommand = stopCommand;
 	}
-	
-	
-	
 	
 }

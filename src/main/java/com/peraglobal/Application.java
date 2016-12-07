@@ -9,7 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *  
  *  <p>Copyright 安世亚太 2016 All right reserved.
  *  @author yongqian.liu	
- *  @version 1.0 
+ *  @version 1.0
+ *  2016-12-2
  *  </br>最后修改人 无
  */
 @SpringBootApplication

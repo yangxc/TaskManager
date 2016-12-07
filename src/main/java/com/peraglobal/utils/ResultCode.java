@@ -1,5 +1,15 @@
 package com.peraglobal.utils;
 
+/**
+ *  <code>ResultCode.java</code>
+ *  <p>功能: Json 状态码工具类
+ *  
+ *  <p>Copyright 安世亚太 2016 All right reserved.
+ *  @author yongqian.liu	
+ *  @version 1.0
+ *  2016-12-7
+ *  </br>最后修改人 无
+ */
 public enum ResultCode {
 
 	/** 成功 */
@@ -29,10 +39,8 @@ public enum ResultCode {
 	/** 未知的错误 */
 	UNKNOWN_ERROR("499", "未知错误");
 	
-	private ResultCode(String value, String msg){
-		this.val = value;
-		this.msg = msg;
-	}
+	private String val;
+	private String msg;
 	
 	public String val() {
 		return val;
@@ -42,6 +50,8 @@ public enum ResultCode {
 		return msg;
 	}
 	
-	private String val;
-	private String msg;
+	private ResultCode(String value, String msg){
+		this.val = value;
+		this.msg = msg;
+	}
 }

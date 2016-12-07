@@ -1,5 +1,15 @@
 package com.peraglobal.utils;
 
+/**
+ *  <code>JsonResult.java</code>
+ *  <p>功能: Json 对象封装
+ *  
+ *  <p>Copyright 安世亚太 2016 All right reserved.
+ *  @author yongqian.liu	
+ *  @version 1.0
+ *  2016-12-7
+ *  </br>最后修改人 无
+ */
 public class JsonResult {
 
 	private String code;
