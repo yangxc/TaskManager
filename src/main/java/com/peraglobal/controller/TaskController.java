@@ -1,13 +1,15 @@
 package com.peraglobal.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.peraglobal.model.Task;
@@ -34,12 +36,15 @@ public class TaskController {
 	/**
 	 * 获得任务列表
 	 * @param groupId 组Id （多用户区分不同用户）
-	 * @return ResponseEntity
+	 * @return List<Task> 任务列表
+	 * @since 1.0
 	 */
-	@RequestMapping(value = "/getTaskList", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getTaskList(@RequestBody String groupId) {
+	@SuppressWarnings("static-access")
+	@RequestMapping(value = "/getTaskList/{groupId}", method = RequestMethod.GET)
+	public ResponseEntity<List<Task>> getTaskList(@PathVariable("groupId") String groupId) {
 		try {
-			return new ResponseEntity<>(taskService.getTaskList(groupId), HttpStatus.OK);
+			List<Task> tasks = taskService.getTaskList(groupId);
+			return new ResponseEntity<>(HttpStatus.OK).accepted().body(tasks);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
@@ -48,12 +53,15 @@ public class TaskController {
 	/**
 	 * 获得任务
 	 * @param taskId 任务 ID
-	 * @return ResponseEntity
+	 * @return Task 任务
+	 * @since 1.0
 	 */
-	@RequestMapping(value = "/getTask", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getTask(@RequestBody String taskId) {
+	@SuppressWarnings("static-access")
+	@RequestMapping(value = "/getTask/{taskId}", method = RequestMethod.GET)
+	public ResponseEntity<Task> getTask(@PathVariable("taskId") String taskId) {
 		try {
-			return new ResponseEntity<>(taskService.getTask(taskId), HttpStatus.OK);
+			Task task = taskService.getTask(taskId);
+			return new ResponseEntity<>(HttpStatus.OK).accepted().body(task);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
@@ -62,14 +70,15 @@ public class TaskController {
 	/**
 	 * 创建任务
 	 * @param task 任务对象
-	 * @return ResponseEntity
+	 * @return taskId 创建成功返回任务 ID
+	 * @since 1.0
 	 */
 	@SuppressWarnings("static-access")
 	@RequestMapping(value = "/createTask", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> createTask(@RequestBody Task task) {
 		try {
 			String taskId = taskService.createTask(task);
-			if(taskId == null) {
+			if(taskId != null) {
 				return new ResponseEntity<>(HttpStatus.CREATED).accepted().body(taskId);
 			}
 		} catch (Exception e) {}
@@ -79,10 +88,11 @@ public class TaskController {
 	/**
 	 * 移除任务
 	 * @param taskId 任务 ID
-	 * @return ResponseEntity
+	 * @return 状态码
+	 * @since 1.0
 	 */
-	@RequestMapping(value = "/removeTask/{taskId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> removeTask(@RequestBody String taskId) {
+	@RequestMapping(value = "/removeTask/{taskId}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> removeTask(@PathVariable("taskId") String taskId) {
 		try {
 			taskService.removeTask(taskId);
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -93,10 +103,10 @@ public class TaskController {
 	/**
 	 * 编辑任务
 	 * @param task 任务对象
-	 * @return ResponseEntity
+	 * @return 状态码
+	 * @since 1.0
 	 */
 	@RequestMapping(value = "/editTask", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
 	public ResponseEntity<?> editTask(@RequestBody Task task) {
 		try {
 			taskService.editTask(task);
@@ -106,29 +116,15 @@ public class TaskController {
 	}
 	
 	/**
-	 * 修改任务名称
-	 * @param task 任务对象
-	 * @return ResponseEntity
-	 */
-	@RequestMapping(value = "/renameTask", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> renameTask(@RequestBody Task task) {
-		try {
-			taskService.renameTask(task);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {}
-		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-	}
-	
-	/**
 	 * 开始任务
 	 * @param taskId 任务 ID
-	 * @return ResponseEntity
+	 * @return 状态码
+	 * @since 1.0
 	 */
-	@RequestMapping(value = "/start/{taskId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ResponseEntity<?> start(@RequestBody String taskId) {
+	@RequestMapping(value = "/start", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> start(@RequestBody Task task) {
 		try {
-			taskService.start(taskId);
+			taskService.start(task.getTaskId());
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {}
 		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
@@ -136,13 +132,15 @@ public class TaskController {
 	
 	/**
 	 * 停止任务
+	 * @see 2016-12-7	 
 	 * @param taskId 任务 ID
-	 * @return ResponseEntity
+	 * @return 状态码
+	 * @since 1.0
 	 */
-	@RequestMapping(value = "/stop/{taskId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> stop(@RequestBody String taskId) {
+	@RequestMapping(value = "/stop", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> stop(@RequestBody Task task) {
 		try {
-			taskService.stop(taskId);
+			taskService.stop(task.getTaskId());
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {}
 		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);

@@ -23,35 +23,64 @@ import com.peraglobal.model.Task;
 @Mapper
 public interface TaskMapper {
 	
-	
+	/**
+	 * 根据组 ID 获得任务列表
+	 * @param groupId 组 ID
+	 * @return List<Task> 任务列表
+	 */
 	@Select("select * from Task where groupId = #{groupId}")
     public List<Task> getTaskList(String groupId);
    
-    @Select("select taskId, taskName, groupId from Task where taskId = #{taskId}")
+	/**
+	 * 根据任务 ID 获得任务
+	 * @param taskId 任务 ID
+	 * @return Task 任务
+	 */
+    @Select("select * from Task where taskId = #{taskId}")
     public Task getTask(String taskId);
    
-    @Select("select taskId from Task where taskName = #{taskName} and groupId = #{groupId}")
-    public String getTaskByTaskName(String taskName, String groupId);
+	/**
+	 * 根据任务名称和组 ID 获得任务
+	 * @param taskName 任务名称
+	 * @param groupId 组 ID
+	 * @return Task 任务
+	 */
+    @Select("select * from Task where taskName = #{taskName} and groupId = #{groupId}")
+    public Task getTaskByTaskName(Task task);
     
-    @Insert("insert into Task (taskId, taskName, groupId, startExpress, stopExpress, startCommand, stopCommand) values(#{taskId}, #{taskName}, #{groupId}, #{startExpress}, #{stopExpress}, #{startCommand}, #{stopCommand})")  
-    public int createTask(Task task);
+	/**
+	 * 创建任务
+	 * @param task 任务对象
+	 */
+    @Insert("insert into Task (taskId, taskName, groupId, startExpress, stopExpress, startCommand, stopCommand, taskState) values (#{taskId}, #{taskName}, #{groupId}, #{startExpress}, #{stopExpress}, #{startCommand}, #{stopCommand}, #{taskState})")  
+    public void createTask(Task task);
 
+    /**
+	 * 移除任务
+	 * @param taskId 任务 ID
+	 */
     @Delete("delete from Task where taskId = #{taskId}")
-	public int removeTask(String taskId);
+	public void removeTask(String taskId);
 
-    @Update("update Task taskName = #{taskName}, groupId = #{groupId}, startExpress = #{startExpress}, stopExpress = #{stopExpress}, startCommand = #{startCommand}, stopCommand = #{stopCommand} where taskId = #{taskId}")
-	public int editTask(Task task);
+	/**
+	 * 编辑任务
+	 * @param task 任务对象
+	 */
+    @Update("update Task set taskName = #{taskName}, startExpress = #{startExpress}, stopExpress = #{stopExpress}, startCommand = #{startCommand}, stopCommand = #{stopCommand} where taskId = #{taskId}")
+	public void editTask(Task task);
 
-    @Update("update Task taskName = #{taskName} where taskId = #{taskId}")
-	public int renameTask(String taskId, String taskName);
+	/**
+	 * 根据任务 ID 修改任务状态
+	 * @param task 任务对象
+	 */
+    @Update("update Task set taskState = #{taskState} where taskId = #{taskId}")
+	public int updateStateByTask(Task task);
 
-    @Update("update Task taskState = #{taskState} where taskId = #{taskId}")
-	public int updateStateByTaskId(String state, String taskId);
-
-    @Select("select * from Task")
-    public List<Task> getTaskAll();
-    
-    
-    
+	/**
+	 * 根据任务状态查询任务列表
+	 * @param stateStrat 任务状态
+	 */
+	@Select("select * from Task where taskState = #{taskState}")
+	public List<Task> getTaskByStart(String stateStrat);
 
 }

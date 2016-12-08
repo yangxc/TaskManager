@@ -25,21 +25,17 @@ public class TaskProcessor implements ApplicationListener<ContextRefreshedEvent>
 	@Resource
     private SchedulerService taskSchedulerService;
 	
-	// 是否初始化
-	private static boolean isStart = true;
-	 
 	/**
 	 * 工程启动时注入所有任务，此方法会重复调用多次，
 	 * 使用静态变量控制任务只在系统启动时，触发加载任务工作
+	 * @since 1.0
 	 */
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
 		// 系统启动时执行
-		if (isStart) { 
-			isStart = false;
-			taskSchedulerService.initScheduler();
-			taskSchedulerService.start(); // 启动调度器
-			taskSchedulerService.initJob(); // 初始化任务
-		}
+		taskSchedulerService.initScheduler();
+		taskSchedulerService.start(); // 启动调度器
+		taskSchedulerService.initJob(); // 初始化任务
+		System.out.println("系统启动时执行");
 	}
 }

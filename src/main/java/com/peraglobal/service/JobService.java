@@ -22,13 +22,17 @@ import com.peraglobal.model.TaskConst;
 public class JobService implements Job {
 	
 	/**
-	 * 所有任务触发操作执行入口
+	 * 任务触发器出发入口，任务定时出发执行功能
 	 */
-	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
+		
+		// 获得当前执行任务对象
 		Task task = (Task)context.getJobDetail().getJobDataMap().get(TaskConst.TASK_KEY);
-		// 标记
+		
+		// 获得当前触发器名称标识
 		String operation = context.getTrigger().getCalendarName();
+		
+		// 匹配标识为开始触发器，则执行开始任务
 		if(operation.equals(TaskConst.TRIGGER_STRAT)) {
 			task.getStartCommand();
 			System.out.println("开始操作功能！");
@@ -36,6 +40,5 @@ public class JobService implements Job {
 			task.getStopCommand();
 			System.out.println("停止操作功能！");
 		}
-    	
     }
 }

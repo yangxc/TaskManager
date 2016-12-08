@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.peraglobal.mapper.TaskMapper;
 import com.peraglobal.model.Task;
 import com.peraglobal.model.TaskConst;
-import com.peraglobal.utils.Result;
 
 /**
  *  <code>TaskService.java</code>
@@ -29,82 +28,118 @@ public class TaskService {
 	@Autowired
     private TaskMapper taskMapper;
 	
-	
-	public List<Task> getTaskList(String groupId) {
+	/**
+	 * 根据组 ID 查询任务列表
+	 * @param groupId 组 ID
+	 * @return List<Task> 任务列表
+	 * @throws Exception
+	 */
+	public List<Task> getTaskList(String groupId) throws Exception {
 		return taskMapper.getTaskList(groupId);
 	}
 	
-	public Task getTask(String taskId) {
+	/**
+	 * 根据任务 ID 查询任务对象
+	 * @param taskId 任务 ID
+	 * @return Task 任务对象
+	 * @throws Exception
+	 */
+	public Task getTask(String taskId) throws Exception {
 		return taskMapper.getTask(taskId);
 	}
 
-	public String createTask(Task task) {
-		try {
-			String taskId = taskMapper.getTaskByTaskName(task.getTaskName(), task.getGroupId());
-			if(taskId == null) {
-				task.setTaskId(java.util.UUID.randomUUID().toString());
-				taskMapper.createTask(task);
-				return task.getTaskId();
-			}
-		} catch (Exception e) {
+	/**
+	 * 创建任务
+	 * @param task 任务对象
+	 * @return taskId 任务 ID
+	 * @throws Exception
+	 */
+	public String createTask(Task task) throws Exception {
+		// 根据当前任务名称和组 ID 查询任务是否存在，则不创建
+		Task t = taskMapper.getTaskByTaskName(task);
+		if(t == null) {
+			// uuid 任务 ID
+			task.setTaskId(java.util.UUID.randomUUID().toString());
+			// 默认状态为：就绪
+			task.setTaskState(TaskConst.STATE_READY);
+			taskMapper.createTask(task);
+			return task.getTaskId();
 		}
 		return null;
 	}
 
-	public int removeTask(String taskId) {
-		Task task = taskMapper.getTask(taskId);
-		schedulerService.delTrigger(task); // 删除触发器
-		schedulerService.delJob(task);
-		try {
+	/**
+	 * 通过任务 ID删除对象
+	 * @param taskId 任务 ID
+	 * @throws Exception
+	 */
+	public void removeTask(String taskId) throws Exception {
+		// 通过任务 ID 查询任务对象是否存在
+		Task t = taskMapper.getTask(taskId);
+		if(t != null) {
+			// 判断任务对象是否在任务调度器中，如果状态为：非就绪，则存在任务调度器中
+			if(!t.getTaskState().equals(TaskConst.STATE_READY)) {
+				schedulerService.delTrigger(t);
+				schedulerService.delJob(t);
+			}
 			taskMapper.removeTask(taskId);
-			return Result.SUCCESS;
-		} catch (Exception e) {
-			return Result.ERROR;
 		}
 	}
 
-	public int editTask(Task task) {
-		try {
-			schedulerService.delTrigger(task);
-			schedulerService.delJob(task);
+	/**
+	 * 编辑任务对象
+	 * @param task 任务对象
+	 * @throws Exception
+	 */
+	public void editTask(Task task) throws Exception {
+		// 查询任务对象是否存在
+		Task t = taskMapper.getTask(task.getTaskId());
+		if(t != null) {
+			// 判断任务对象是否在任务调度器中，如果状态为：非就绪，则存在任务调度器中
+			if(!t.getTaskState().equals(TaskConst.STATE_READY)) {
+				schedulerService.delTrigger(task);
+				schedulerService.delJob(task);
+			}
 			taskMapper.editTask(task);
-		} catch (Exception e) {
-			return Result.ERROR;
 		}
-		return Result.SUCCESS;
 	}
 
-	public int renameTask(Task task) {
-		try {
-			taskMapper.renameTask(task.getTaskId(), task.getTaskName());
-		} catch (Exception e) {
-			return Result.ERROR;
+	/**
+	 * 开始任务
+	 * @param taskId 任务 ID
+	 * @throws Exception
+	 */
+	public void start(String taskId) throws Exception {
+		Task t = taskMapper.getTask(taskId);
+		// 任务状态为：非开始，则开始任务
+		if(t != null && !t.getTaskState().equals(TaskConst.STATE_STRAT)) {
+			// 更新任务状态
+			t.setTaskState(TaskConst.STATE_STRAT);
+			taskMapper.updateStateByTask(t);
+			// 添加到任务调度器
+			schedulerService.addJob(t);
 		}
-		return Result.SUCCESS;
 	}
 
-	public int start(String taskId) {
-		Task task = taskMapper.getTask(taskId);
-		try {
-			schedulerService.addJob(task);
-			taskMapper.updateStateByTaskId(TaskConst.STATE_STRAT, taskId);
-		} catch (Exception e) {
-			return Result.ERROR;
+	/**
+	 * 停止任务
+	 * @param taskId
+	 * @throws Exception
+	 */
+	public void stop(String taskId) throws Exception {
+		Task t = taskMapper.getTask(taskId);
+		// 任务状态为：开始，则停止任务
+		if(t != null && t.getTaskState().equals(TaskConst.STATE_STRAT)) {
+			// 更新任务状态为停止
+			t.setTaskState(TaskConst.STATE_STOP);
+			taskMapper.updateStateByTask(t);
+			// 停止任务，手动调用停止任务操作
+			schedulerService.stopJob(t);
+			// 删除调度器中触发器
+			schedulerService.delTrigger(t);
+			// 删除调度器中任务
+			schedulerService.delJob(t);
 		}
-		return Result.SUCCESS;
 	}
-
-	public int stop(String taskId) {
-		Task task = taskMapper.getTask(taskId);
-		try {
-			schedulerService.delTrigger(task);
-			schedulerService.delJob(task);
-			// 执行停止采集命令，预留
-			
-			taskMapper.updateStateByTaskId(TaskConst.STATE_STOP, taskId);
-		} catch (Exception e) {
-			return Result.ERROR;
-		}
-		return Result.SUCCESS;
-	}
+	
 }

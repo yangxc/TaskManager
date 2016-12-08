@@ -38,6 +38,9 @@ public class SchedulerService {
 	@Autowired
     private TaskMapper taskMapper;
 	
+	/**
+     * 初始化任务调度器
+     */
 	public void initScheduler() {
 		try {
 			scheduler = sf.getScheduler();
@@ -59,7 +62,7 @@ public class SchedulerService {
 	}
 
 	/**
-     * 暂停任务调度器，此方法暂时没有使用
+     * 暂停任务调度器
      */
 	public void standby() {
 		try {
@@ -70,7 +73,7 @@ public class SchedulerService {
 	}
 	
 	/**
-     * 停止任务调度器，此方法暂时没有使用
+     * 停止任务调度器
      */
 	public void shutdown() {
 		try {
@@ -81,15 +84,14 @@ public class SchedulerService {
 	}
 	
 	/**
-     * 初始化所有任务
+     * 初始化所有状态为开始的任务
      */
 	public void initJob() {
 		try {
-			List<Task> tasks = taskMapper.getTaskAll();
-			if (tasks != null && tasks.size() > 0) {
-				for (Task task : tasks) {
-					this.addJob(task);
-				}
+			// 查询所有已经启动的任务
+			List<Task> tasks = taskMapper.getTaskByStart(TaskConst.STATE_STRAT);
+			for (Task task : tasks) {
+				this.addJob(task);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -151,5 +153,10 @@ public class SchedulerService {
 			e.printStackTrace();
 		}
     }
+
+	public void stopJob(Task task) {
+		// 后续完善
+		
+	}
 	
 }

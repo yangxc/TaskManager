@@ -12,12 +12,34 @@ package com.peraglobal.model;
  */
 public class TaskConst {
 	
+	/**
+	 * @category 任务 Key
+	 */
 	public static final String TASK_KEY = "task_key";
 	
+	/**
+	 * @category 开始触发器 ID 标识
+	 */
 	public static final String TRIGGER_STRAT = "trigger_strat";
+	
+	/**
+	 * @category 结束触发器 ID 标识
+	 */
 	public static final String TRIGGER_STOP = "trigger_stop";
 
-	public static final String STATE_STRAT = "state_strat";
-	public static final String STATE_STOP = "state_stop";
+	/**
+	 * @category 任务状态：就绪
+	 */
+	public static final String STATE_READY = "0";
+	
+	/**
+	 * @category 任务状态：开始
+	 */
+	public static final String STATE_STRAT = "1";
+	
+	/**
+	 * @category 任务状态：结束
+	 */
+	public static final String STATE_STOP = "2";
 
 }

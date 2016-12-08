@@ -1,13 +1,5 @@
-﻿
-
-DROP DATABASE IF EXISTS `test`;
-CREATE DATABASE `test` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `test`;
-
-
-
-DROP TABLE IF EXISTS `task`;
-CREATE TABLE `task` (
+﻿DROP TABLE IF EXISTS `Task`;
+CREATE TABLE `Task` (
   `taskId` varchar(50) NOT NULL DEFAULT '' COMMENT 'ID',
   `taskName` varchar(500) NOT NULL DEFAULT '' COMMENT '名称',
   `groupId` varchar(500) NOT NULL DEFAULT '' COMMENT '组ID',  
@@ -21,4 +13,4 @@ CREATE TABLE `task` (
 
 
 
-INSERT INTO `task` VALUES ('1001','info','101');
+INSERT INTO `Task` VALUES ('1001','info','101','0 0 12 * * ? "','0 0 13 * * ? "','start','stop','0');
