@@ -1,5 +1,7 @@
 package com.peraglobal.model;
 
+import java.util.Date;
+
 /**
  *  <code>Task.java</code>
  *  <p>功能:任务对象
@@ -26,6 +28,11 @@ public class Task {
 	 * @category 组 ID
 	 */
 	private String groupId;
+	
+	/**
+	 * @category 组名称
+	 */
+	private String groupName;
 
 	/**
 	 * @category 开始时间表达式
@@ -52,6 +59,15 @@ public class Task {
 	 */
 	private String taskState;
 	
+	/**
+	 * @category 创建时间
+	 */
+	private Date createTime;
+	
+	/**
+	 * @category 更新时间
+	 */
+	private Date updateTime;
 
 	public String getTaskId() {
 		return taskId;
@@ -75,6 +91,14 @@ public class Task {
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 
 	public String getStartExpress() {
@@ -108,7 +132,7 @@ public class Task {
 	public void setStopCommand(String stopCommand) {
 		this.stopCommand = stopCommand;
 	}
-	
+
 	public String getTaskState() {
 		return taskState;
 	}
@@ -116,4 +140,21 @@ public class Task {
 	public void setTaskState(String taskState) {
 		this.taskState = taskState;
 	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+	
 }

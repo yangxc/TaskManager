@@ -52,7 +52,7 @@ public interface TaskMapper {
 	 * 创建任务
 	 * @param task 任务对象
 	 */
-    @Insert("insert into Task (taskId, taskName, groupId, startExpress, stopExpress, startCommand, stopCommand, taskState) values (#{taskId}, #{taskName}, #{groupId}, #{startExpress}, #{stopExpress}, #{startCommand}, #{stopCommand}, #{taskState})")  
+    @Insert("insert into Task (taskId, taskName, groupId, groupName, startExpress, stopExpress, startCommand, stopCommand, taskState, createTime, updateTime) values (#{taskId}, #{taskName}, #{groupId}, #{groupName}, #{startExpress}, #{stopExpress}, #{startCommand}, #{stopCommand}, #{taskState}, #{createTime}, #{updateTime})")  
     public void createTask(Task task);
 
     /**
@@ -66,14 +66,14 @@ public interface TaskMapper {
 	 * 编辑任务
 	 * @param task 任务对象
 	 */
-    @Update("update Task set taskName = #{taskName}, startExpress = #{startExpress}, stopExpress = #{stopExpress}, startCommand = #{startCommand}, stopCommand = #{stopCommand} where taskId = #{taskId}")
+    @Update("update Task set taskName = #{taskName}, groupName = #{groupName}, startExpress = #{startExpress}, stopExpress = #{stopExpress}, startCommand = #{startCommand}, stopCommand = #{stopCommand}, updateTime = #{updateTime} where taskId = #{taskId}")
 	public void editTask(Task task);
 
 	/**
 	 * 根据任务 ID 修改任务状态
 	 * @param task 任务对象
 	 */
-    @Update("update Task set taskState = #{taskState} where taskId = #{taskId}")
+    @Update("update Task set taskState = #{taskState}, updateTime = #{updateTime} where taskId = #{taskId}")
 	public int updateStateByTask(Task task);
 
 	/**

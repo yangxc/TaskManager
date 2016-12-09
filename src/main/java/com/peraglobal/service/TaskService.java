@@ -1,5 +1,6 @@
 package com.peraglobal.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,8 @@ public class TaskService {
 			task.setTaskId(java.util.UUID.randomUUID().toString());
 			// 默认状态为：就绪
 			task.setTaskState(TaskConst.STATE_READY);
+			task.setCreateTime(new Date());
+			task.setUpdateTime(new Date());
 			taskMapper.createTask(task);
 			return task.getTaskId();
 		}
@@ -100,6 +103,7 @@ public class TaskService {
 				schedulerService.delTrigger(task);
 				schedulerService.delJob(task);
 			}
+			task.setUpdateTime(new Date());
 			taskMapper.editTask(task);
 		}
 	}
@@ -115,6 +119,7 @@ public class TaskService {
 		if(t != null && !t.getTaskState().equals(TaskConst.STATE_STRAT)) {
 			// 更新任务状态
 			t.setTaskState(TaskConst.STATE_STRAT);
+			t.setUpdateTime(new Date());
 			taskMapper.updateStateByTask(t);
 			// 添加到任务调度器
 			schedulerService.addJob(t);
@@ -132,6 +137,7 @@ public class TaskService {
 		if(t != null && t.getTaskState().equals(TaskConst.STATE_STRAT)) {
 			// 更新任务状态为停止
 			t.setTaskState(TaskConst.STATE_STOP);
+			t.setUpdateTime(new Date());
 			taskMapper.updateStateByTask(t);
 			// 停止任务，手动调用停止任务操作
 			schedulerService.stopJob(t);
