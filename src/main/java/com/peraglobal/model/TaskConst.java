@@ -41,5 +41,16 @@ public class TaskConst {
 	 * @category 任务状态：结束
 	 */
 	public static final String STATE_STOP = "2";
+	
+	/**
+	 * @category 是否叶子节点：0.否；1.是；
+	 */
+	public static final String No = "0";
+	
+	/**
+	 * @category 是否叶子节点：0.否；1.是；
+	 */
+	public static final String YES = "0";
+	
 
 }
