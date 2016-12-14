@@ -57,15 +57,18 @@ public class TaskService {
 	 */
 	public String createTask(Task task) throws Exception {
 		// 根据当前任务名称和组 ID 查询任务是否存在，则不创建
-		Task t = taskMapper.getTaskByTaskName(task);
-		if(t == null) {
-			// uuid 任务 ID
-			task.setTaskId(java.util.UUID.randomUUID().toString());
-			// 默认状态为：就绪
-			task.setTaskState(TaskConst.STATE_READY);
+		Task temp = taskMapper.getTaskByTaskName(task);
+		if(temp == null) {
+			task.setTaskId(java.util.UUID.randomUUID().toString()); // uuid 任务 ID
+			task.setTaskState(TaskConst.STATE_READY); // 默认状态为：就绪
 			task.setCreateTime(new Date());
 			task.setUpdateTime(new Date());
 			taskMapper.createTask(task);
+			
+			// 更新监控日志，后续完善
+			
+			// 添加到任务调度器
+			schedulerService.addJob(task);
 			return task.getTaskId();
 		}
 		return null;
@@ -78,14 +81,19 @@ public class TaskService {
 	 */
 	public void removeTask(String taskId) throws Exception {
 		// 通过任务 ID 查询任务对象是否存在
-		Task t = taskMapper.getTask(taskId);
-		if(t != null) {
-			// 判断任务对象是否在任务调度器中，如果状态为：非就绪，则存在任务调度器中
-			if(!t.getTaskState().equals(TaskConst.STATE_READY)) {
-				schedulerService.delTrigger(t);
-				schedulerService.delJob(t);
+		Task task = taskMapper.getTask(taskId);
+		if(task != null) {
+			// 停止任务
+			schedulerService.stopJob(task);
+			
+			// 在任务调度器中删除触发器
+			if(!task.getTaskState().equals(TaskConst.STATE_STOP)) {
+				schedulerService.delTrigger(task);
+				schedulerService.delJob(task);
 			}
 			taskMapper.removeTask(taskId);
+			
+			// 删除监控日志，后续完善
 		}
 	}
 
@@ -95,14 +103,17 @@ public class TaskService {
 	 * @throws Exception
 	 */
 	public void editTask(Task task) throws Exception {
-		// 查询任务对象是否存在
-		Task t = taskMapper.getTask(task.getTaskId());
-		if(t != null) {
-			// 判断任务对象是否在任务调度器中，如果状态为：非就绪，则存在任务调度器中
-			if(!t.getTaskState().equals(TaskConst.STATE_READY)) {
-				schedulerService.delTrigger(task);
-				schedulerService.delJob(task);
-			}
+
+		Task temp = taskMapper.getTask(task.getTaskId());
+		if(temp != null) {
+			// 删除任务触发器
+			schedulerService.delTrigger(task);
+			schedulerService.delJob(task);
+			
+			// 重新添加到任务调度器中
+			schedulerService.addJob(task);
+			
+			// 更新任务
 			task.setUpdateTime(new Date());
 			taskMapper.editTask(task);
 		}
@@ -114,15 +125,18 @@ public class TaskService {
 	 * @throws Exception
 	 */
 	public void start(String taskId) throws Exception {
-		Task t = taskMapper.getTask(taskId);
+		Task task = taskMapper.getTask(taskId);
 		// 任务状态为：非开始，则开始任务
-		if(t != null && !t.getTaskState().equals(TaskConst.STATE_STRAT)) {
+		if(task != null && !task.getTaskState().equals(TaskConst.STATE_STRAT)) {
+			// 手动开始任务
+			schedulerService.startJob(task);
+			
 			// 更新任务状态
-			t.setTaskState(TaskConst.STATE_STRAT);
-			t.setUpdateTime(new Date());
-			taskMapper.updateStateByTask(t);
-			// 添加到任务调度器
-			schedulerService.addJob(t);
+			task.setTaskState(TaskConst.STATE_STRAT);
+			task.setUpdateTime(new Date());
+			taskMapper.updateStateByTask(task);
+			
+			// 更新监控日志，后续完善
 		}
 	}
 
@@ -132,19 +146,25 @@ public class TaskService {
 	 * @throws Exception
 	 */
 	public void stop(String taskId) throws Exception {
-		Task t = taskMapper.getTask(taskId);
+		Task task = taskMapper.getTask(taskId);
 		// 任务状态为：开始，则停止任务
-		if(t != null && t.getTaskState().equals(TaskConst.STATE_STRAT)) {
-			// 更新任务状态为停止
-			t.setTaskState(TaskConst.STATE_STOP);
-			t.setUpdateTime(new Date());
-			taskMapper.updateStateByTask(t);
+		if(task != null && task.getTaskState().equals(TaskConst.STATE_STRAT)) {
+			
 			// 停止任务，手动调用停止任务操作
-			schedulerService.stopJob(t);
+			schedulerService.stopJob(task);
+			
 			// 删除调度器中触发器
-			schedulerService.delTrigger(t);
+			schedulerService.delTrigger(task);
+			
 			// 删除调度器中任务
-			schedulerService.delJob(t);
+			schedulerService.delJob(task);
+			
+			// 更新任务状态为停止
+			task.setTaskState(TaskConst.STATE_STOP);
+			task.setUpdateTime(new Date());
+			taskMapper.updateStateByTask(task);
+			
+			// 更新监控日志，后续完善
 		}
 	}
 	

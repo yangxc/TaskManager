@@ -26,7 +26,7 @@ import com.peraglobal.service.TaskService;
  *  </br>最后修改人 无
  */
 @RestController
-@RequestMapping("task")
+@RequestMapping("taskmanager/task")
 public class TaskController {
 	
 	@Autowired

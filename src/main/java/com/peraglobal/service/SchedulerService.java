@@ -153,10 +153,18 @@ public class SchedulerService {
 			e.printStackTrace();
 		}
     }
-
+    
+    public void startJob(Task task) {
+		// 执行命令，后续完善
+    	
+    	// 更新监控日志，后续完善
+		
+	}
+    
 	public void stopJob(Task task) {
 		// 后续完善
 		
+		// 更新监控日志，后续完善
 	}
 	
 }

@@ -35,7 +35,6 @@ public class TaskProcessor implements ApplicationListener<ContextRefreshedEvent>
 		// 系统启动时执行
 		taskSchedulerService.initScheduler();
 		taskSchedulerService.start(); // 启动调度器
-		taskSchedulerService.initJob(); // 初始化任务
 		System.out.println("系统启动时执行");
 	}
 }

@@ -1,5 +1,6 @@
 package com.peraglobal.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,9 @@ import java.util.Date;
  *  @see 2016-12-12
  *  </br>最后修改人 无
  */
-public class TaskGroup {
+public class TaskGroup  implements Serializable {
+
+	private static final long serialVersionUID = -3977403355311123744L;
 
 	/**
 	 * @category 组 ID

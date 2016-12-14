@@ -26,7 +26,7 @@ import com.peraglobal.service.GroupService;
  *  </br>最后修改人 无
  */
 @RestController
-@RequestMapping("group")
+@RequestMapping("taskmanager/group")
 public class GroupController {
 	
 	@Autowired
