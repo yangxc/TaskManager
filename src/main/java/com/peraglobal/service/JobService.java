@@ -8,7 +8,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.peraglobal.common.ApplicationContextUtil;
+import com.peraglobal.common.CurrentApplicationContext;
 import com.peraglobal.mapper.TaskMapper;
 import com.peraglobal.model.Task;
 import com.peraglobal.model.TaskConst;
@@ -34,7 +34,7 @@ public class JobService implements Job {
 	 */
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		
-		taskMapper =  (TaskMapper)ApplicationContextUtil.getBean("taskMapper");
+		taskMapper =  (TaskMapper)CurrentApplicationContext.getBean("taskMapper");
 		
 		// 获得当前执行任务对象
 		Task task = (Task)context.getJobDetail().getJobDataMap().get(TaskConst.TASK_KEY);

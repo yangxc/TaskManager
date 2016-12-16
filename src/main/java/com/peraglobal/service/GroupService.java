@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.peraglobal.common.IDGenerate;
 import com.peraglobal.mapper.GroupMapper;
 import com.peraglobal.model.TaskGroup;
 import com.peraglobal.model.TaskConst;
@@ -70,8 +71,7 @@ public class GroupService {
 				groupMapper.editTaskGroup(parentGroup);
 			}
 			
-			// uuid 组 ID
-			taskGroup.setGroupId(java.util.UUID.randomUUID().toString());
+			taskGroup.setGroupId(IDGenerate.uuid());
 			taskGroup.setIfLeaf(TaskConst.YES); // 设置当前节点为叶子节点
 			taskGroup.setCreateTime(new Date());
 			taskGroup.setUpdateTime(new Date());

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.peraglobal.common.IDGenerate;
 import com.peraglobal.mapper.TaskMapper;
 import com.peraglobal.model.Task;
 import com.peraglobal.model.TaskConst;
@@ -59,7 +60,7 @@ public class TaskService {
 		// 根据当前任务名称和组 ID 查询任务是否存在，则不创建
 		Task temp = taskMapper.getTaskByTaskName(task);
 		if(temp == null) {
-			task.setTaskId(java.util.UUID.randomUUID().toString()); // uuid 任务 ID
+			task.setTaskId(IDGenerate.uuid()); // uuid 任务 ID
 			task.setTaskState(TaskConst.STATE_READY); // 默认状态为：就绪
 			task.setCreateTime(new Date());
 			task.setUpdateTime(new Date());
