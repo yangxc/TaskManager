@@ -1,5 +1,6 @@
 package com.peraglobal.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,28 @@ public class TaskService {
 	
 	@Autowired
     private TaskMapper taskMapper;
+	
+	/**
+	 * 根据页数查询任务列表
+	 * @param pageNo 页数
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Task> getTasks(int pageNo)  throws Exception {
+		int start = (pageNo - 1) * 50;
+		int end = start + 50 - 1;
+		List<Task> tasks = taskMapper.getTasks();
+		if (tasks != null && tasks.size() > 0) {
+			List<Task> reTasks = new ArrayList<Task>();
+			for (int i = 0; i < tasks.size(); i++) {
+				if (i >= start && i <= end) {
+					reTasks.add(tasks.get(i)); 
+				}
+			}
+			return reTasks;
+		}
+		return null;
+	}
 	
 	/**
 	 * 根据组 ID 查询任务列表
@@ -168,5 +191,6 @@ public class TaskService {
 			// 更新监控日志，后续完善
 		}
 	}
+
 	
 }

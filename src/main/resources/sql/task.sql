@@ -1,6 +1,6 @@
 -- 任务调度器
-DROP TABLE IF EXISTS `Task`;
-CREATE TABLE `Task` (
+DROP TABLE IF EXISTS `task`;
+CREATE TABLE `task` (
   `taskId` varchar(50) NOT NULL DEFAULT '' COMMENT 'ID',
   `taskName` varchar(500) NOT NULL DEFAULT '' COMMENT '名称',
   `groupId` varchar(500) NOT NULL DEFAULT '' COMMENT '组ID', 
@@ -18,10 +18,8 @@ CREATE TABLE `Task` (
 
 -- 任务组
 
--- 任务组
-
-DROP TABLE IF EXISTS `TaskGroup`;
-CREATE TABLE `TaskGroup` (
+DROP TABLE IF EXISTS `taskgroup`;
+CREATE TABLE `taskgroup` (
   `groupId` varchar(50) NOT NULL DEFAULT '' COMMENT 'ID',
   `groupName` varchar(500) NOT NULL DEFAULT '' COMMENT '名称',
   `parentId` varchar(500) NOT NULL DEFAULT '' COMMENT '父节点ID', 

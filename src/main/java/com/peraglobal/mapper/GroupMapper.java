@@ -28,7 +28,7 @@ public interface GroupMapper {
 	 * 获得组列表
 	 * @return List<Group> 组列表
 	 */
-	@Select("select * from TaskGroup")
+	@Select("select * from taskgroup")
     public List<TaskGroup> getTaskGroupList();
    
 	/**
@@ -36,7 +36,7 @@ public interface GroupMapper {
 	 * @param parentId 父节点 ID
 	 * @return Group 组列表
 	 */
-	@Select("select * from TaskGroup where parentId = #{parentId}")
+	@Select("select * from taskgroup where parentId = #{parentId}")
     public List<TaskGroup> getTaskGroupsByParentId(String parentId);
 	
 	/**
@@ -44,7 +44,7 @@ public interface GroupMapper {
 	 * @param groupId ID
 	 * @return Group 组
 	 */
-	@Select("select * from TaskGroup where groupId = #{groupId}")
+	@Select("select * from taskgroup where groupId = #{groupId}")
     public TaskGroup getTaskGroup(String groupId);
    
 	/**
@@ -53,28 +53,28 @@ public interface GroupMapper {
 	 * @param groupId 组 ID
 	 * @return Task 组
 	 */
-    @Select("select * from TaskGroup where parentId = #{parentId} and groupName = #{groupName}")
+    @Select("select * from taskgroup where parentId = #{parentId} and groupName = #{groupName}")
     public TaskGroup getTaskGroupByGroup(TaskGroup taskGroup);
     
 	/**
 	 * 创建组
 	 * @param group 组对象
 	 */
-    @Insert("insert into TaskGroup (groupId, groupName, parentId, ifLeaf, createTime, updateTime) values (#{groupId}, #{groupName}, #{parentId}, #{ifLeaf}, #{createTime}, #{updateTime})")  
+    @Insert("insert into taskgroup (groupId, groupName, parentId, ifLeaf, createTime, updateTime) values (#{groupId}, #{groupName}, #{parentId}, #{ifLeaf}, #{createTime}, #{updateTime})")  
     public void createTaskGroup(TaskGroup taskGroup);
 
     /**
 	 * 移除组
 	 * @param groupId 组 ID
 	 */
-    @Delete("delete from TaskGroup where groupId = #{groupId}")
+    @Delete("delete from taskgroup where groupId = #{groupId}")
 	public void removeTaskGroup(String groupId);
 
 	/**
 	 * 编辑组
 	 * @param group 组对象
 	 */
-    @Update("update TaskGroup set groupName = #{groupName}, updateTime = #{updateTime} where groupId = #{groupId}")
+    @Update("update taskgroup set groupName = #{groupName}, updateTime = #{updateTime} where groupId = #{groupId}")
 	public void editTaskGroup(TaskGroup taskGroup);
 
 }

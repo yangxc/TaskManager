@@ -40,6 +40,23 @@ public class TaskController {
 	 * @since 1.0
 	 */
 	@SuppressWarnings("static-access")
+	@RequestMapping(value = "/getTasks/{pageNo}", method = RequestMethod.GET)
+	public ResponseEntity<List<Task>> getTasks(@PathVariable("pageNo") int pageNo) {
+		try {
+			List<Task> tasks = taskService.getTasks(pageNo);
+			return new ResponseEntity<>(HttpStatus.OK).accepted().body(tasks);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
+	}
+	
+	/**
+	 * 获得任务列表
+	 * @param groupId 组Id （多用户区分不同用户）
+	 * @return List<Task> 任务列表
+	 * @since 1.0
+	 */
+	@SuppressWarnings("static-access")
 	@RequestMapping(value = "/getTaskList/{groupId}", method = RequestMethod.GET)
 	public ResponseEntity<List<Task>> getTaskList(@PathVariable("groupId") String groupId) {
 		try {
