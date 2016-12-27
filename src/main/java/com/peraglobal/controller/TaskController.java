@@ -35,7 +35,7 @@ public class TaskController {
 	
 	/**
 	 * 获得任务列表
-	 * @param groupId 组Id （多用户区分不同用户）
+	 * @param pageNo 页数
 	 * @return List<Task> 任务列表
 	 * @since 1.0
 	 */
@@ -139,9 +139,9 @@ public class TaskController {
 	 * @since 1.0
 	 */
 	@RequestMapping(value = "/start", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> start(@RequestBody Task task) {
+	public ResponseEntity<?> start(@RequestBody String taskId) {
 		try {
-			taskService.start(task.getTaskId());
+			taskService.start(taskId);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {}
 		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
@@ -155,9 +155,9 @@ public class TaskController {
 	 * @since 1.0
 	 */
 	@RequestMapping(value = "/stop", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> stop(@RequestBody Task task) {
+	public ResponseEntity<?> stop(@RequestBody String taskId) {
 		try {
-			taskService.stop(task.getTaskId());
+			taskService.stop(taskId);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {}
 		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
