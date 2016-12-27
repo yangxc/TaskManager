@@ -192,5 +192,16 @@ public class TaskService {
 		}
 	}
 
+	public List<Task> getTasksByState(String state) throws Exception {
+		if (state.equals("READY")) {
+			state = TaskConst.STATE_READY;
+		} else if (state.equals("RUNNING")){
+			state = TaskConst.STATE_STRAT;
+		}else {
+			state = TaskConst.STATE_STOP;
+		}
+		return taskMapper.getTasksByState(state);
+	}
+
 	
 }

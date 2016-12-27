@@ -162,4 +162,23 @@ public class TaskController {
 		} catch (Exception e) {}
 		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 	}
+	
+	/**
+	 * 获得任务
+	 * @param taskId 任务 ID
+	 * @return Task 任务
+	 * @since 1.0
+	 */
+	@SuppressWarnings("static-access")
+	@RequestMapping(value = "/getTasksByState/{state}", method = RequestMethod.GET)
+	public ResponseEntity<List<Task>> getTasksByState(@PathVariable("state") String state) {
+		try {
+			List<Task> tasks = taskService.getTasksByState(state);
+			return new ResponseEntity<>(HttpStatus.OK).accepted().body(tasks);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
+	}
+	
+	
 }

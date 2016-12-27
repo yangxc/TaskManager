@@ -40,6 +40,15 @@ public interface TaskMapper {
     public List<Task> getTaskList(String groupId);
    
 	/**
+	 * 根据任务状态获得任务列表
+	 * @param taskState
+	 * @return
+	 */
+	@Select("select * from task where taskState = #{taskState}")
+	public List<Task> getTasksByState(String taskState);
+	
+	
+	/**
 	 * 根据任务 ID 获得任务
 	 * @param taskId 任务 ID
 	 * @return Task 任务
