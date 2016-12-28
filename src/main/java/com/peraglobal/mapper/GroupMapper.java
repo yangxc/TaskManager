@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.peraglobal.model.TaskGroup;
-import com.peraglobal.model.Task;
 
 /**
  *  <code>TaskMapper.java</code>
@@ -76,5 +75,12 @@ public interface GroupMapper {
 	 */
     @Update("update taskgroup set groupName = #{groupName}, updateTime = #{updateTime} where groupId = #{groupId}")
 	public void editTaskGroup(TaskGroup taskGroup);
+    
+    /**
+	 * 编辑组的节点标记
+	 * @param group 组对象
+	 */
+    @Update("update taskgroup set ifLeaf = #{ifLeaf}, updateTime = #{updateTime} where groupId = #{groupId}")
+	public void updateIfLeaf(TaskGroup taskGroup);
 
 }

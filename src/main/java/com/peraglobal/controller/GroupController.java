@@ -91,7 +91,7 @@ public class GroupController {
 	 * @since 1.0
 	 */
 	@SuppressWarnings("static-access")
-	@RequestMapping(value = "/createTaskGroup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/createTaskGroup", method = RequestMethod.POST)
 	public ResponseEntity<String> createTaskGroup(@RequestBody TaskGroup taskGroup) {
 		try {
 			String groupId = groupService.createTaskGroup(taskGroup);

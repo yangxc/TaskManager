@@ -68,7 +68,7 @@ public class GroupService {
 			if(parentGroup != null) {
 				parentGroup.setUpdateTime(new Date());
 				parentGroup.setIfLeaf(TaskConst.No);
-				groupMapper.editTaskGroup(parentGroup);
+				groupMapper.updateIfLeaf(parentGroup);
 			}
 			
 			taskGroup.setGroupId(IDGenerate.uuid());
@@ -107,9 +107,11 @@ public class GroupService {
 	 */
 	public void editTaskGroup(TaskGroup taskGroup) throws Exception {
 		TaskGroup group = groupMapper.getTaskGroup(taskGroup.getGroupId());
-		group.setGroupName(taskGroup.getGroupName());
-		group.setUpdateTime(new Date());
-		groupMapper.editTaskGroup(group);
+		if (group != null) {
+			group.setGroupName(taskGroup.getGroupName());
+			group.setUpdateTime(new Date());
+			groupMapper.editTaskGroup(group);
+		}
 	}
 
 }
