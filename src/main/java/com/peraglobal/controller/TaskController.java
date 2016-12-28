@@ -139,9 +139,9 @@ public class TaskController {
 	 * @since 1.0
 	 */
 	@RequestMapping(value = "/start", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> start(@RequestBody String taskId) {
+	public ResponseEntity<?> start(@RequestBody Task task) {
 		try {
-			taskService.start(taskId);
+			taskService.start(task.getTaskId());
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {}
 		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
@@ -155,9 +155,9 @@ public class TaskController {
 	 * @since 1.0
 	 */
 	@RequestMapping(value = "/stop", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> stop(@RequestBody String taskId) {
+	public ResponseEntity<?> stop(@RequestBody Task task) {
 		try {
-			taskService.stop(taskId);
+			taskService.stop(task.getTaskId());
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {}
 		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
