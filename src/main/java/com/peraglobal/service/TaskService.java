@@ -83,7 +83,9 @@ public class TaskService {
 		// 根据当前任务名称和组 ID 查询任务是否存在，则不创建
 		Task temp = taskMapper.getTaskByTaskName(task);
 		if(temp == null) {
-			task.setTaskId(IDGenerate.uuid()); // uuid 任务 ID
+			if (null == task.getTaskId()) {
+				task.setTaskId(IDGenerate.uuid()); // uuid 任务 ID
+			}
 			task.setTaskState(TaskConst.STATE_READY); // 默认状态为：就绪
 			task.setCreateTime(new Date());
 			task.setUpdateTime(new Date());

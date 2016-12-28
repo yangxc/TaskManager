@@ -98,7 +98,9 @@ public class TaskController {
 			if(taskId != null) {
 				return new ResponseEntity<>(HttpStatus.CREATED).accepted().body(taskId);
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 	}
 	
@@ -143,7 +145,9 @@ public class TaskController {
 		try {
 			taskService.start(task.getTaskId());
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 	}
 	

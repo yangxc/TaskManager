@@ -29,12 +29,16 @@ public class JobService implements Job {
 	@Autowired
     private TaskMapper taskMapper;
 	
+	@Autowired
+	private SchedulerService schedulerService;
+	
 	/**
 	 * 任务触发器出发入口，任务定时出发执行功能
 	 */
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		
-		taskMapper =  (TaskMapper)CurrentApplicationContext.getBean("taskMapper");
+		taskMapper = (TaskMapper)CurrentApplicationContext.getBean("taskMapper");
+		schedulerService = (SchedulerService)CurrentApplicationContext.getBean("schedulerService");
 		
 		// 获得当前执行任务对象
 		Task task = (Task)context.getJobDetail().getJobDataMap().get(TaskConst.TASK_KEY);
@@ -51,7 +55,7 @@ public class JobService implements Job {
 				if(!currentTask.getTaskState().equals(TaskConst.STATE_STRAT)) {
 					
 					// 执行命令
-					task.getStartCommand();
+					schedulerService.startJob(currentTask);
 					System.out.println("开始操作功能！");
 					// 更新任务状态
 					task.setTaskState(TaskConst.STATE_STRAT);
@@ -65,7 +69,7 @@ public class JobService implements Job {
 				if(currentTask.getTaskState().equals(TaskConst.STATE_STRAT)) {
 					
 					// 执行命令
-					task.getStopCommand();
+					schedulerService.stopJob(currentTask);
 					System.out.println("停止操作功能！");
 					// 更新任务状态
 					task.setTaskState(TaskConst.STATE_STOP);

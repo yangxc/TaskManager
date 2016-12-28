@@ -2,7 +2,10 @@ package com.peraglobal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 import com.peraglobal.common.CurrentApplicationContext;
 
@@ -24,4 +27,8 @@ public class Application {
 		CurrentApplicationContext.setApplicationContext(applicationContext);
     }
 
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
+	}
 }

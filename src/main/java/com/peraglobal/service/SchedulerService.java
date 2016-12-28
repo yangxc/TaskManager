@@ -13,6 +13,7 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.peraglobal.mapper.TaskMapper;
 import com.peraglobal.model.Task;
@@ -37,6 +38,9 @@ public class SchedulerService {
 	
 	@Autowired
     private TaskMapper taskMapper;
+	
+	@Autowired
+	RestTemplate restTemplate;
 	
 	/**
      * 初始化任务调度器
@@ -155,14 +159,16 @@ public class SchedulerService {
     }
     
     public void startJob(Task task) {
-		// 执行命令，后续完善
+		// 执行命令
+    	restTemplate.put(task.getStartCommand(), task.getTaskId());
     	
     	// 更新监控日志，后续完善
 		
 	}
     
 	public void stopJob(Task task) {
-		// 后续完善
+		// 执行命令
+    	restTemplate.put(task.getStopCommand(), task.getTaskId());
 		
 		// 更新监控日志，后续完善
 	}
