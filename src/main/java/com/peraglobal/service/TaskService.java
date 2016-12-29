@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.peraglobal.common.IDGenerate;
+import com.peraglobal.mapper.GroupMapper;
 import com.peraglobal.mapper.TaskMapper;
 import com.peraglobal.model.Task;
 import com.peraglobal.model.TaskConst;
+import com.peraglobal.model.TaskGroup;
 
 /**
  *  <code>TaskService.java</code>
@@ -31,6 +33,9 @@ public class TaskService {
 	@Autowired
     private TaskMapper taskMapper;
 	
+	@Autowired
+	private GroupMapper groupMapper;
+	
 	/**
 	 * 根据页数查询任务列表
 	 * @param pageNo 页数
@@ -48,7 +53,7 @@ public class TaskService {
 					reTasks.add(tasks.get(i)); 
 				}
 			}
-			return reTasks;
+			return this.setSate(reTasks);
 		}
 		return null;
 	}
@@ -60,7 +65,8 @@ public class TaskService {
 	 * @throws Exception
 	 */
 	public List<Task> getTaskList(String groupId) throws Exception {
-		return taskMapper.getTaskList(groupId);
+		List<Task> tasks = taskMapper.getTaskList(groupId);
+		return this.setSate(tasks);
 	}
 	
 	/**
@@ -202,8 +208,32 @@ public class TaskService {
 		}else {
 			state = TaskConst.STATE_STOP;
 		}
-		return taskMapper.getTasksByState(state);
+		List<Task> tasks = taskMapper.getTasksByState(state);
+		return this.setSate(tasks);
 	}
 
+	private List<Task> setSate(List<Task> tasks) {
+		List<TaskGroup> taskGroups = groupMapper.getTaskGroupList();
+		
+		if (tasks != null && tasks.size() > 0) {
+			for (Task task : tasks) {
+				if (task.getTaskState().equals(TaskConst.STATE_READY)) {
+					task.setTaskState("就绪");
+				} else if (task.getTaskState().equals(TaskConst.STATE_STRAT)){
+					task.setTaskState("开始");
+				}else if (task.getTaskState().equals(TaskConst.STATE_STOP)){
+					task.setTaskState("停止");
+				}else {
+					task.setTaskState("禁用");
+				}
+				for (TaskGroup taskGroup : taskGroups) {
+					if (task.getGroupId().equals(taskGroup.getGroupId())) {
+						task.setGroupName(taskGroup.getGroupName());
+					}
+				}
+			}
+		}
+		return tasks;
+	}
 	
 }
