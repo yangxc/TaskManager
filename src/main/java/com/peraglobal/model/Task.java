@@ -38,16 +38,6 @@ public class Task  implements Serializable {
 	private String groupName;
 
 	/**
-	 * @category 开始时间表达式
-	 */
-	private String startExpress;
-	
-	/**
-	 * @category 停止时间表达式
-	 */
-	private String stopExpress;
-	
-	/**
 	 * @category 开始命令
 	 */
 	private String startCommand;
@@ -102,22 +92,6 @@ public class Task  implements Serializable {
 
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
-	}
-
-	public String getStartExpress() {
-		return startExpress;
-	}
-
-	public void setStartExpress(String startExpress) {
-		this.startExpress = startExpress;
-	}
-
-	public String getStopExpress() {
-		return stopExpress;
-	}
-
-	public void setStopExpress(String stopExpress) {
-		this.stopExpress = stopExpress;
 	}
 
 	public String getStartCommand() {

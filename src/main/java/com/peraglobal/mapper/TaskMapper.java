@@ -69,7 +69,7 @@ public interface TaskMapper {
 	 * 创建任务
 	 * @param task 任务对象
 	 */
-    @Insert("insert into task (taskId, taskName, groupId, groupName, startExpress, stopExpress, startCommand, stopCommand, taskState, createTime, updateTime) values (#{taskId}, #{taskName}, #{groupId}, #{groupName}, #{startExpress}, #{stopExpress}, #{startCommand}, #{stopCommand}, #{taskState}, #{createTime}, #{updateTime})")  
+    @Insert("insert into task (taskId, taskName, groupId, groupName, startCommand, stopCommand, taskState, createTime, updateTime) values (#{taskId}, #{taskName}, #{groupId}, #{groupName}, #{startCommand}, #{stopCommand}, #{taskState}, #{createTime}, #{updateTime})")  
     public void createTask(Task task);
 
     /**
@@ -83,7 +83,7 @@ public interface TaskMapper {
 	 * 编辑任务
 	 * @param task 任务对象
 	 */
-    @Update("update task set taskName = #{taskName}, groupName = #{groupName}, startExpress = #{startExpress}, stopExpress = #{stopExpress}, startCommand = #{startCommand}, stopCommand = #{stopCommand}, updateTime = #{updateTime} where taskId = #{taskId}")
+    @Update("update task set taskName = #{taskName}, groupName = #{groupName}, startCommand = #{startCommand}, stopCommand = #{stopCommand}, updateTime = #{updateTime} where taskId = #{taskId}")
 	public void editTask(Task task);
 
 	/**

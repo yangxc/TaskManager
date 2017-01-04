@@ -117,13 +117,14 @@ public class SchedulerService {
 	        
 	        // 放入参数，运行时的方法可以获取
 	        jobDetail.getJobDataMap().put(TaskConst.TASK_KEY, task);
-	        	
+	        
+	        
 			// 开始时间
-			Trigger triggerStart = CronExp.triggerToOne(task.getTaskId(), task.getStartExpress(), TaskConst.TRIGGER_STRAT, jobDetail);
+			Trigger triggerStart = CronExp.triggerToOne(task.getTaskId(), null, TaskConst.TRIGGER_STRAT, jobDetail);
 			scheduler.scheduleJob(jobDetail, triggerStart);
 
 			// 结束时间
-			Trigger triggerStop = CronExp.triggerToOne(task.getTaskId(), task.getStopExpress(), TaskConst.TRIGGER_STOP, jobDetail);
+			Trigger triggerStop = CronExp.triggerToOne(task.getTaskId(), null, TaskConst.TRIGGER_STOP, jobDetail);
 			scheduler.scheduleJob(triggerStop);
 		} catch (Exception e) {
 			e.printStackTrace();
