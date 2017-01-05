@@ -18,7 +18,6 @@ import com.peraglobal.service.GroupService;
 /**
  *  <code>GroupController.java</code>
  *  <p>功能:任务组 Controller
- *  
  *  <p>Copyright 安世亚太 2016 All right reserved.
  *  @author yongqian.liu	
  *  @version 1.0
