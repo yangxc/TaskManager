@@ -43,6 +43,31 @@ public class TaskConst {
 	public static final String STATE_STOP = "2";
 	
 	/**
+	 * @category 任务状态：禁用
+	 */
+	public static final String STATE_FORBIDDEN = "3";
+	
+	/**
+	 * @category 任务状态：就绪
+	 */
+	public static final String STATE_READY_TO = "就绪";
+	
+	/**
+	 * @category 任务状态：开始
+	 */
+	public static final String STATE_STRAT_TO = "运行";
+	
+	/**
+	 * @category 任务状态：结束
+	 */
+	public static final String STATE_STOP_TO = "结束";
+	
+	/**
+	 * @category 任务状态：禁用
+	 */
+	public static final String STATE_FORBIDDEN_TO = "禁用";
+	
+	/**
 	 * @category 是否叶子节点：0.否；
 	 */
 	public static final String No = "0";

@@ -33,9 +33,6 @@ public class TaskService {
 	@Autowired
     private TaskMapper taskMapper;
 	
-	@Autowired
-	private GroupMapper groupMapper;
-	
 	/**
 	 * 根据页数查询任务列表
 	 * @param pageNo 页数
@@ -53,7 +50,7 @@ public class TaskService {
 					reTasks.add(tasks.get(i)); 
 				}
 			}
-			return this.setSate(reTasks);
+			return reTasks;
 		}
 		return null;
 	}
@@ -65,8 +62,7 @@ public class TaskService {
 	 * @throws Exception
 	 */
 	public List<Task> getTaskList(String groupId) throws Exception {
-		List<Task> tasks = taskMapper.getTaskList(groupId);
-		return this.setSate(tasks);
+		return taskMapper.getTaskList(groupId);
 	}
 	
 	/**
@@ -201,39 +197,8 @@ public class TaskService {
 	}
 
 	public List<Task> getTasksByState(String state) throws Exception {
-		if (state.equals("READY")) {
-			state = TaskConst.STATE_READY;
-		} else if (state.equals("RUNNING")){
-			state = TaskConst.STATE_STRAT;
-		}else {
-			state = TaskConst.STATE_STOP;
-		}
-		List<Task> tasks = taskMapper.getTasksByState(state);
-		return this.setSate(tasks);
+		return taskMapper.getTasksByState(state);
 	}
 
-	private List<Task> setSate(List<Task> tasks) {
-		List<TaskGroup> taskGroups = groupMapper.getTaskGroupList();
-		
-		if (tasks != null && tasks.size() > 0) {
-			for (Task task : tasks) {
-				if (task.getTaskState().equals(TaskConst.STATE_READY)) {
-					task.setTaskState("就绪");
-				} else if (task.getTaskState().equals(TaskConst.STATE_STRAT)){
-					task.setTaskState("开始");
-				}else if (task.getTaskState().equals(TaskConst.STATE_STOP)){
-					task.setTaskState("停止");
-				}else {
-					task.setTaskState("禁用");
-				}
-				for (TaskGroup taskGroup : taskGroups) {
-					if (task.getGroupId().equals(taskGroup.getGroupId())) {
-						task.setGroupName(taskGroup.getGroupName());
-					}
-				}
-			}
-		}
-		return tasks;
-	}
 	
 }

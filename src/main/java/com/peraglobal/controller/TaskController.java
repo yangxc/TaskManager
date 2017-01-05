@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.peraglobal.model.Task;
+import com.peraglobal.model.TaskConst;
 import com.peraglobal.service.TaskService;
 
 /**
@@ -44,6 +45,9 @@ public class TaskController {
 	public ResponseEntity<List<Task>> getTasks(@PathVariable("pageNo") int pageNo) {
 		try {
 			List<Task> tasks = taskService.getTasks(pageNo);
+			if (tasks != null) {
+				setTasksStatus(tasks);
+			}
 			return new ResponseEntity<>(HttpStatus.OK).accepted().body(tasks);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
@@ -61,6 +65,9 @@ public class TaskController {
 	public ResponseEntity<List<Task>> getTaskList(@PathVariable("groupId") String groupId) {
 		try {
 			List<Task> tasks = taskService.getTaskList(groupId);
+			if (tasks != null) {
+				setTasksStatus(tasks);
+			}
 			return new ResponseEntity<>(HttpStatus.OK).accepted().body(tasks);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
@@ -178,10 +185,30 @@ public class TaskController {
 	public ResponseEntity<List<Task>> getTasksByState(@PathVariable("state") String state) {
 		try {
 			List<Task> tasks = taskService.getTasksByState(state);
+			if (tasks != null) {
+				setTasksStatus(tasks);
+			}
 			return new ResponseEntity<>(HttpStatus.OK).accepted().body(tasks);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
 	}
 	
+	/**
+	 * 设置任务状态和采集数量
+	 */
+	private void setTasksStatus(List<Task> tasks) {
+		for (Task task : tasks) {
+			// 设置任务状态
+			if (TaskConst.STATE_READY.equals(task.getTaskState())) {
+				task.setTaskState(TaskConst.STATE_READY_TO);
+			} else if (TaskConst.STATE_STRAT.equals(task.getTaskState())) {
+				task.setTaskState(TaskConst.STATE_STRAT_TO);
+			} else if (TaskConst.STATE_STOP.equals(task.getTaskState())) {
+				task.setTaskState(TaskConst.STATE_STOP_TO);
+			}else {
+				task.setTaskState(TaskConst.STATE_FORBIDDEN_TO);
+			}
+		}
+	}
 }
