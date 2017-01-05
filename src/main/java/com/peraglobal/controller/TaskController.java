@@ -185,7 +185,7 @@ public class TaskController {
 	public ResponseEntity<List<Task>> getTasksByState(@PathVariable("state") String state) {
 		try {
 			List<Task> tasks = taskService.getTasksByState(state);
-			if (tasks != null) {
+			if (tasks != null) { 
 				setTasksStatus(tasks);
 			}
 			return new ResponseEntity<>(HttpStatus.OK).accepted().body(tasks);
