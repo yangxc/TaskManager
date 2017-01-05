@@ -31,7 +31,7 @@ public class GroupController {
 	@Autowired
 	private GroupService groupService;
 	
-	
+	  
 	/**
 	 * 获得组列表
 	 * @param groupId 组Id （多用户区分不同用户）
