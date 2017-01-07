@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.peraglobal.common.IDGenerate;
-import com.peraglobal.mapper.GroupMapper;
 import com.peraglobal.mapper.TaskMapper;
 import com.peraglobal.model.Task;
 import com.peraglobal.model.TaskConst;
-import com.peraglobal.model.TaskGroup;
 
 /**
  *  <code>TaskService.java</code>
@@ -96,7 +94,7 @@ public class TaskService {
 			// 更新监控日志，后续完善
 			
 			// 添加到任务调度器
-			schedulerService.addJob(task);
+			// schedulerService.addJob(task);
 			return task.getTaskId();
 		}
 		return null;
