@@ -27,7 +27,7 @@ public interface GroupMapper {
 	 * 获得组列表
 	 * @return List<Group> 组列表
 	 */
-	@Select("select * from taskgroup")
+	@Select("select * from taskgroup ")
     public List<TaskGroup> getTaskGroupList();
    
 	/**
