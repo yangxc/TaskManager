@@ -28,7 +28,7 @@ public interface TaskMapper {
 	 * @param pageNo 页数
 	 * @return
 	 */
-	@Select("select * from task")
+	@Select("select * from task order by createTime desc")
 	public List<Task> getTasks();
 	
 	/**
@@ -36,7 +36,7 @@ public interface TaskMapper {
 	 * @param groupId 组 ID
 	 * @return List<Task> 任务列表
 	 */
-	@Select("select * from task where groupId = #{groupId}")
+	@Select("select * from task where groupId = #{groupId} order by createTime desc")
     public List<Task> getTaskList(String groupId);
    
 	/**
@@ -44,7 +44,7 @@ public interface TaskMapper {
 	 * @param taskState
 	 * @return
 	 */
-	@Select("select * from task where taskState = #{taskState}")
+	@Select("select * from task where taskState = #{taskState} order by createTime desc")
 	public List<Task> getTasksByState(String taskState);
 	
 	
@@ -97,7 +97,7 @@ public interface TaskMapper {
 	 * 根据任务状态查询任务列表
 	 * @param stateStrat 任务状态
 	 */
-	@Select("select * from task where taskState = #{taskState}")
+	@Select("select * from task where taskState = #{taskState} order by createTime desc")
 	public List<Task> getTaskByStart(String stateStrat);
 
 	

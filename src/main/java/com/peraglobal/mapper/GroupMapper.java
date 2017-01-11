@@ -27,7 +27,7 @@ public interface GroupMapper {
 	 * 获得组列表
 	 * @return List<Group> 组列表
 	 */
-	@Select("select * from taskgroup ")
+	@Select("select * from taskgroup order by createTime desc")
     public List<TaskGroup> getTaskGroupList();
    
 	/**
@@ -35,7 +35,7 @@ public interface GroupMapper {
 	 * @param parentId 父节点 ID
 	 * @return Group 组列表
 	 */
-	@Select("select * from taskgroup where parentId = #{parentId}")
+	@Select("select * from taskgroup where parentId = #{parentId} order by createTime desc")
     public List<TaskGroup> getTaskGroupsByParentId(String parentId);
 	
 	/**
